@@ -34,8 +34,8 @@ class World:
         for idx in range(len(self.humans)):
             h = self.humans[idx]
             h.perceive(self)
+            h.decide()
             h.act()
-            h.update()
 
         self.describe()
 

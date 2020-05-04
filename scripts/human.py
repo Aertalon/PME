@@ -67,7 +67,8 @@ Name: {name}
         """
 
         if (self.decision.basic_action and
-            self.decision.basic_action.get_type() == 'Movement'):
+                self.decision.basic_action.get_type() == 'Movement'):
+            import pdb; pdb.set_trace()
             self.pos = self.pos + DIRECTIONS[self.decision.basic_action.direction]
             self.hunger = self.hunger + HUNGER_DECREASE_RATE['movement']
 

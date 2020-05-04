@@ -1,5 +1,6 @@
-from scripts.actions import BasicMovement
-from scripts.actions import Decision
+from scripts.actions import Decision, BasicMovement
+from scripts.auxiliary import distance
+from scripts.sense import EYESIGHT
 
 
 class Brain:
@@ -33,6 +34,7 @@ class FrontalLobe:
     def __init__(self):
         pass
 
+
     def decide_action(self, perception, memory, action_tree):
         if not action_tree:
             next_action = None
@@ -40,6 +42,24 @@ class FrontalLobe:
             next_action = action_tree[0] # first, MVP
 
         return next_action
+
+
+class Hippocampus:
+    """
+    Hippocampus controls memory
+    """
+    def __init__(self):
+        self.memory = dict()
+
+    def update_memory(self, perceptions):
+
+        for seen_pos, seen in perceptions['sight'].items():
+            self.memory[seen_pos] = seen
+
+        for mem_pos, mem in self.memory.items():
+            if (distance(mem_pos, perceptions['curr_pos']) < EYESIGHT and
+                    mem_pos not in perceptions['sight'].keys()):
+                self.memory.pop(seen_pos, None)
 
 
 class Cerebellum:
@@ -58,9 +78,10 @@ class Cerebellum:
         """
 
         curr_pos = perception['curr_pos']
-        next_movement = BasicMovement()
 
+        next_movement = None
         if next_action and next_action.get_type() is 'MovementTo':
+            next_movement = BasicMovement()
             desired_pos = next_action.desired_position
 
             if curr_pos[0] < desired_pos[0]:

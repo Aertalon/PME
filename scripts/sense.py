@@ -19,7 +19,7 @@ class Senses:
     def get_status(self):
         status = '\n'
         if self.perceptions['sight']:
-            for seen in self.perceptions['sight']:
+            for seen_pos, seen in self.perceptions['sight'].items():
                 if seen['type'] is 'human':
                     description = '{seen_type} ({seen_name})'.format(
                         seen_type=seen['type'],
@@ -28,7 +28,7 @@ class Senses:
                     description = seen['type']
 
                 status = """{status}        o {description} at {seen_pos}""".format(
-                    status=status, description=description, seen_pos=seen['pos'])
+                    status=status, description=description, seen_pos=seen_pos)
 
         return status
 
@@ -41,14 +41,14 @@ class Sight:
     @staticmethod
     def see(world, curr_pos):
 
-        seen = []
+        seen = dict()
 
         for human in world.humans:
             if distance(curr_pos, human.pos) < EYESIGHT:
-                seen.append({'type': 'human', 'name': human.name, 'pos': human.pos})
+                seen[tuple(human.pos)] = {'type': 'human', 'name': human.name}
 
         for plant in world.plants:
             if distance(curr_pos, plant.pos) < EYESIGHT:
-                seen.append({'type': 'plant', 'pos': plant.pos})
+                seen[tuple(plant.pos)] = {'type': 'plant', 'name': None}
 
         return seen
