@@ -1,0 +1,12 @@
+cc_library(
+    name = "person",
+    hdrs = ["person.h",],
+    srcs = ["person.cpp",],
+    deps = [
+        "//src/job",
+    ],
+    visibility = [
+        "//src/job:__pkg__",
+        "//src/person/test:__pkg__",
+        "//:__pkg__"]
+)

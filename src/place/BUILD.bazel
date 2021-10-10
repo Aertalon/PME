@@ -1,0 +1,11 @@
+cc_library(
+    name = "place",
+    hdrs = ["location.h",],
+    srcs = [],
+    deps = [
+    ],
+    visibility = [
+        "//src/place/test:__pkg__",
+        "//:__pkg__"]
+
+)

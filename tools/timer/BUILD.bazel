@@ -1,0 +1,12 @@
+cc_library(
+    name = "timer",
+    hdrs = ["timer.h",],
+    linkopts=["-lpthread"],
+    visibility = ["//:__pkg__"]
+)
+
+cc_binary(
+    name = "timer_test",
+    srcs = ["timer_test.cpp",],
+    deps = [":timer",]
+)
