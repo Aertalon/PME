@@ -89,7 +89,7 @@ auto div(R1 r1, R2 r2) -> std::enable_if_t<are_same_derivation_v<R1, R2, Resourc
 /// Grain
 ///
 /// Stable food, every person needs to consume grain to survive
-class Grain : Resource
+class Grain : public Resource
 {
     public:
         Grain(int q) : Resource(q) {}
@@ -99,7 +99,7 @@ class Grain : Resource
 /// Frankincense
 ///
 /// A fragrant thing
-class Frankincense : Resource
+class Frankincense : public Resource
 {
     public:
         Frankincense(int q) : Resource(q) {}
@@ -108,7 +108,7 @@ class Frankincense : Resource
 /// Tool
 ///
 /// A useful gizmo
-class Tool : Resource
+class Tool : public Resource
 {
     public:
         Tool(int q) : Resource(q) {}

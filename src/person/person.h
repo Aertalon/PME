@@ -1,5 +1,6 @@
 #include <string>
 #include "src/job/job.h"
+#include <iostream>
 
 #ifndef PERSON_H_
 #define PERSON_H_
@@ -12,11 +13,14 @@ class Person
 {
     std::string name_;
     J job_;
+    int energy_;
+
 
     public:
         Person(std::string name) :
             name_(name),
-            job_{}
+            job_{},
+            energy_{10}
             {}
 
         // Buys at most a quantity q of resource R
@@ -35,6 +39,14 @@ class Person
             using person_job = typename producer_of<R>::job;
             return Person<person_job>{};
         }
+
+        void update()
+        {
+            energy_--;
+        }
+
+
+
 };
 
 #endif // PERSON_H_

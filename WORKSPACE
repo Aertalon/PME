@@ -19,8 +19,6 @@ http_archive(
   strip_prefix = "rules_cc-40548a2974f1aea06215272d9c2b47a14a24e556",
 )
 
-
-
 http_archive(
     name = "sfml",
     urls = [
