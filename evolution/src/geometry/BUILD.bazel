@@ -1,0 +1,14 @@
+cc_library(
+    name = "geometry",
+    hdrs = [
+        "geometry.h"
+    ],
+    deps = [
+        "//src/common:common",
+    ],
+    visibility = [
+        "//src/geometry/test:__pkg__",
+        "//src/graphics_handler:__pkg__",
+        "//src/agent:__pkg__",
+        ]
+)

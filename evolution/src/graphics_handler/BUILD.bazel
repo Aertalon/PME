@@ -1,0 +1,15 @@
+
+
+cc_library(
+    name = "graphics_handler",
+    hdrs = [
+        "graphics_handler.h"
+    ],
+    deps = [
+        "//src/common:common",
+        "//src/geometry",
+    ],
+    visibility = [
+        "//src/agent:__pkg__", # TODO: insensato
+        "//:__pkg__"]
+)

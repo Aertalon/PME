@@ -1,0 +1,22 @@
+cc_library(
+    name = "common",
+    hdrs = [
+        "common.h"
+    ],
+    visibility = [
+        "//src/geometry:__pkg__",
+        "//src/graphics_handler:__pkg__",
+        "//src/agent:__pkg__",
+        "//:__pkg__"]
+)
+
+cc_library(
+    name = "event_handler",
+    srcs = ["event_handler.cpp"],
+    hdrs = ["event_handler.h"],
+    deps = [
+        "@sfml//:sfml",
+    ],
+    visibility = [
+        "//:__pkg__"]
+)

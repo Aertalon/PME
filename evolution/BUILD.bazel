@@ -1,0 +1,11 @@
+
+cc_binary(
+    name = "evolution",
+    srcs = ["src/main.cpp"],
+    deps = [
+        "//src/common:common",
+        "//src/common:event_handler",
+        "//src/agent",
+        "@sfml//:sfml",
+    ]
+)
