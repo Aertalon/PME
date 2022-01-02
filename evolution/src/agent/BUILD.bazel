@@ -1,14 +1,14 @@
-
-
 cc_library(
     name = "agent",
     srcs = ["agent.cpp"],
     hdrs = ["agent.h"],
     deps = [
+        "//src/body",
+        "//src/brain",
         "//src/common",
         "//src/geometry",
         "//src/graphics_handler" # TODO: insensato
     ],
     visibility = [
-        "//:__pkg__"]
+        "//src/world:__pkg__"]
 )

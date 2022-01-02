@@ -84,6 +84,11 @@ TEST(Geometry, Rotate) {
   v.rotate(Rotation::Clockwise);
   EXPECT_TRUE(v == Vector(1, 0));
 
+  v.rotate(Rotation::Clockwise, 4);
+  EXPECT_TRUE(v == Vector(-1, 0));
+  v.rotate(Rotation::Clockwise, 4);
+  EXPECT_TRUE(v == Vector(1, 0));
+
   v.rotate(Rotation::Counterclockwise);
   EXPECT_TRUE(v == Vector(1, 1));
   v.rotate(Rotation::Counterclockwise);
@@ -100,6 +105,9 @@ TEST(Geometry, Rotate) {
   EXPECT_TRUE(v == Vector(1, -1));
   v.rotate(Rotation::Counterclockwise);
   EXPECT_TRUE(v == Vector(1, 0));
+
+  v.rotate(Rotation::Counterclockwise, 4);
+  EXPECT_TRUE(v == Vector(-1, 0));
 
   Point p1{1,0};
   constexpr Point o{0, 0};

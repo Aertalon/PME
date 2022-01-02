@@ -1,5 +1,8 @@
 cc_library(
     name = "geometry",
+    srcs = [
+        "geometry.cpp"
+    ],
     hdrs = [
         "geometry.h"
     ],
@@ -7,8 +10,9 @@ cc_library(
         "//src/common:common",
     ],
     visibility = [
+        "//src/agent:__pkg__",
+        "//src/body:__pkg__",
         "//src/geometry/test:__pkg__",
         "//src/graphics_handler:__pkg__",
-        "//src/agent:__pkg__",
         ]
 )

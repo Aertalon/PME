@@ -10,6 +10,8 @@ cc_library(
         "//src/geometry",
     ],
     visibility = [
+        "//src/body:__pkg__", # TODO: insensato
         "//src/agent:__pkg__", # TODO: insensato
+        "//src/world:__pkg__",
         "//:__pkg__"]
 )

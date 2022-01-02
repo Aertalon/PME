@@ -1,6 +1,7 @@
 #include "src/common/common.h"
 #include <cmath>
 #include <iostream>
+#include <random>
 
 #ifndef EVOLUTION_GEOMETRY_H_
 #define EVOLUTION_GEOMETRY_H_
@@ -28,39 +29,11 @@ namespace geometry
                 y_{y}
             {}
 
-            void rotate(Rotation r)
-            {
-                if (*this == Vector{})
-                {
-                    return;
-                }
-                bool const counterclockwise{r == Rotation::Counterclockwise};
-                int coeff = counterclockwise ? 1 : -1;
-
-                if (std::abs(x_) > std::abs(y_))
-                {
-                    y_ += coeff*std::copysign(1, x_);
-                }
-                else if (std::abs(x_) < std::abs(y_))
-                {
-                    x_ += -coeff*std::copysign(1, y_);
-                }
-                else
-                {
-                    if (((x_*y_  > 0) && !counterclockwise) || ((x_*y_  < 0) && counterclockwise))
-                    {
-                        y_ += coeff*std::copysign(1, x_);
-                    }
-                    else
-                    {
-                        x_ += -coeff*std::copysign(1, y_);
-                    }
-                }
-            }
+        void rotate(Rotation r);
+        void rotate(Rotation r, int dist);
 
         constexpr int x() const { return x_; }
         constexpr int y() const { return y_; }
-
 
         private:
 
@@ -96,54 +69,23 @@ namespace geometry
                 y_{y}
             {}
 
+        bool is_valid() const;
+        int to_pixel() const;
 
+        Point& operator+=(Vector const& vec);
 
-        bool is_valid() const
-        {
-            return (x_ >= 0) && (x_ < kWidth) && (y_ >= 0) && (y_ < kHeight);
-        }
+        void rotate_around(Point const& o, Rotation r);
+        void rotate_around(Point const& o, Rotation r, int dist);
 
-        int to_pixel() const
-        {
-            return (x_ + y_*kWidth)*kElsPerPixel;
-        }
-
-        Point& operator+=(Vector const& vec)
-        {
-            *this = *this + vec;
-            return *this;
-        }
-
-        void rotate_around(Point const& o, Rotation r)
-        {
-            auto v = *this - o;
-            std::cout << v << std::endl;
-            if (v != Vector{})
-            {
-                v.rotate(r);
-                std::cout << v << std::endl;
-
-                *this = o + v;
-            }
-        }
-
-        friend std::ostream& operator<<(std::ostream& os, Point const& p)
-        {
-            os << "(" << p.x_ << ", " << p.y_ << ")";
-            return os;
-        }
-
-        constexpr int x()
-        {
-            return x_;
-        }
-
-        constexpr int y()
-        {
-            return y_;
-        }
+        constexpr int x() const { return x_; }
+        constexpr int y() const { return y_; }
 
         private:
+            friend std::ostream& operator<<(std::ostream& os, Point const& p)
+            {
+                os << "(" << p.x_ << ", " << p.y_ << ")";
+                return os;
+            }
 
             friend constexpr Point operator+(Point const& p, Vector const& vec)
             {
@@ -171,6 +113,26 @@ namespace geometry
             int x_{};
             int y_{};
     };
+
+template<int W, int H>
+class PointRandomGenerator final
+{
+    public:
+        PointRandomGenerator() = default;
+
+        Point generate()
+        {
+            return evolution::geometry::Point(
+                width_generator_.generate(),
+                height_generator_.generate());
+        }
+
+    private:
+        IntRandomGenerator<0, W> width_generator_{};
+        IntRandomGenerator<0, H> height_generator_{};
+};
+
+inline PointRandomGenerator<kWidth, kHeight> point_generator{};
 
 }  // namespace geometry
 }  // namespace evolution

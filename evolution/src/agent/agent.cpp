@@ -1,91 +1,77 @@
 #include "src/agent/agent.h"
 
-
-namespace
-{
-std::random_device action_rd;
-std::mt19937 action_gen(action_rd());
-std::uniform_int_distribution<> action_distrib(1, 4);
-
-using Actions = evolution::agent::Actions;
-Actions generate_random_action()
-{
-    return static_cast<Actions>(action_distrib(action_gen));
-}
-
-}
-
 namespace evolution
 {
 namespace agent
 {
 
-void Body::move(Actions const& a)
+void AgentPerception::set_perception(
+    geometry::Point const& head,
+    geometry::Point const& tail,
+    std::vector<evolution::agent::Tree>& trees)
 {
-    if (a == Actions::MoveForward)
-    {
-        auto dir = head_ - tail_;
-        head_ += dir;
-        tail_ += dir;
-    }
-    else if (a == Actions::TurnLeft)
-    {
-        head_.rotate_around(tail_, geometry::Rotation::Counterclockwise);
-    }
-    else if (a == Actions::TurnRight)
-    {
-        head_.rotate_around(tail_, geometry::Rotation::Clockwise);
-    }
-    else
-    {
-        // Other actions are not movements
-    }
-}
+    info_.surrounding_trees.fill(0);
+    info_.tree_at_location = nullptr;
 
-void Body::draw(graphics_handler::GraphicsHandler& gh)
-{
-    constexpr int h{50};
+    info_.direction = head - tail;
+    auto front = head + info_.direction;
+    auto front_left = head + info_.direction;
+    front_left.rotate_around(head, geometry::Rotation::Counterclockwise);
+    auto front_right = head + info_.direction;
+    front_right.rotate_around(head, geometry::Rotation::Clockwise);
 
-    for(int j{-h}; j < h+1; j++)
+    for (auto& t: trees)
     {
-        for(int i{-h}; i < h+1; i++)
+        if (t.is_alive())
         {
-            gh.set_pixel(
-                geometry::Point{tail_.x() + j, kHeight - tail_.y() + i}, sf::Color::Blue);
-            gh.set_pixel(
-                geometry::Point{head_.x() + j, kHeight - head_.y() + i}, sf::Color::Red);
+            if (t.position() == head)
+            {
+                info_.tree_at_location = &t;
+                info_.surrounding_trees[0] = 1;
+            }
+
+            if (t.position() == front)
+            {
+                info_.surrounding_trees[1] = 1;
+            }
+
+            if (t.position() == front_left)
+            {
+                info_.surrounding_trees[2] = 1;
+            }
+
+            if (t.position() == front_right)
+            {
+                info_.surrounding_trees[3] = 1;
+            }
         }
     }
 }
 
-
-void Agent::update()
+void Agent::perceive(std::vector<evolution::agent::Tree>& trees)
 {
-    perceive();
-    decide();
-    act();
+    perception_.set_perception(
+        this->body_.head(),
+        this->body_.tail(),
+        trees);
 }
 
-void Agent::perceive()
-{}
-
-void Agent::decide ()
+void Agent::decide()
 {
-    action_ = generate_random_action();
-    std::cout << static_cast<int>(action_) << std::endl;
-}
-
-void Agent::update_world(graphics_handler::GraphicsHandler& gh)
-{
-    body_.draw(gh);
+    action_ = brain_.decide(perception_.to_array());
 }
 
 void Agent::act()
 {
     body_.move(action_);
-
-    std::cout << "Agent's body position: ";
-    std::cout << body_ << std::endl;
+    if (action_ == Actions::Eat)
+    {
+        if (perception_.get_perceived_info().tree_at_location != nullptr)
+        {
+            perception_.get_perceived_info().tree_at_location->dies();
+            energy_ += 20;
+        }
+    }
 }
 
 }  // namespace agent

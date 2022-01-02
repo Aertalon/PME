@@ -1,12 +1,15 @@
 cc_library(
     name = "common",
-    hdrs = [
-        "common.h"
-    ],
+    srcs = ["common.cpp"],
+    hdrs = ["common.h"],
     visibility = [
+        "//src/agent:__pkg__",
+        "//src/brain:__pkg__",
+        "//src/body:__pkg__",
+        "//src/genes:__pkg__",
         "//src/geometry:__pkg__",
         "//src/graphics_handler:__pkg__",
-        "//src/agent:__pkg__",
+        "//src/world:__pkg__",
         "//:__pkg__"]
 )
 

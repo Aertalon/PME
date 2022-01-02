@@ -39,6 +39,18 @@ class GraphicsHandler
             }
         }
 
+        void set_square(geometry::Point const& center, int side_length, sf::Color color)
+        {
+            for (int j{-side_length}; j < side_length + 1; j++)
+            {
+                for (int i{-side_length}; i < side_length + 1; i++)
+                {
+                    set_pixel(
+                        geometry::Point{center.x() + j, kHeight - center.y() + i}, color);
+                }
+            }
+        }
+
         void draw(sf::RenderWindow& window)
         {
             texture_.update(pixels_.data());
@@ -46,7 +58,6 @@ class GraphicsHandler
             window.draw(sprite_);
             window.display();
         }
-
 
         data_type get_data()
         {

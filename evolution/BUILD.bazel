@@ -5,7 +5,7 @@ cc_binary(
     deps = [
         "//src/common:common",
         "//src/common:event_handler",
-        "//src/agent",
+        "//src/world",
         "@sfml//:sfml",
     ]
 )
