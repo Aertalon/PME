@@ -1,0 +1,11 @@
+cc_library(
+    name = "genes",
+    srcs = ["genes.cpp"],
+    hdrs = ["genes.h"],
+    deps = [
+        "//src/common"
+    ],
+    visibility = [
+        "//src/brain:__pkg__",
+        "//:__pkg__"]
+)

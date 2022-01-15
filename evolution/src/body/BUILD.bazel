@@ -1,0 +1,13 @@
+cc_library(
+    name = "body",
+    srcs = ["body.cpp"],
+    hdrs = ["body.h"],
+    deps = [
+        "//src/common",
+        "//src/geometry",
+        "//src/graphics_handler" # TODO: insensato
+    ],
+    visibility = [
+        "//src/agent:__pkg__",
+        "//:__pkg__"]
+)

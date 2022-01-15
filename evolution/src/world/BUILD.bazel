@@ -1,0 +1,12 @@
+cc_library(
+    name = "world",
+    srcs = [],
+    hdrs = ["world.h"],
+    deps = [
+        "//src/agent",
+        "//src/common",
+        "//src/graphics_handler"
+    ],
+    visibility = [
+        "//:__pkg__"]
+)
