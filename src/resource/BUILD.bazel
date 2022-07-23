@@ -1,9 +1,0 @@
-cc_library(
-    name = "resource",
-    hdrs = ["resource.h",],
-    srcs = ["resource.cpp",],
-    visibility = [
-        "//src/job:__pkg__",
-        "//src/resource/test:__pkg__",
-        "//:__pkg__"]
-)
